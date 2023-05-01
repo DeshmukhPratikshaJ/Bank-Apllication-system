@@ -1,7 +1,7 @@
 package com.testBank;
 import static com.bank.BankAccount.*;
 import com.bank.*;
-public class TesterBankAccount {
+public class TesterBankActHardcode {
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to "+organisation);
