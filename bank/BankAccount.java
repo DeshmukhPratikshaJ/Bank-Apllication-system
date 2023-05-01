@@ -1,5 +1,9 @@
 package com.bank;
 
+import java.time.LocalDate;
+
+import com.BankEnum.AcType;
+
 public class BankAccount {
 	public static String organisation;
 	public static int totalCustomers;
@@ -8,7 +12,7 @@ public class BankAccount {
 	private AcType at;
 	private String name;
 	private String email;
-	private Date doO;
+	private LocalDate doO;
 	private double balance;
 	private Locker locker;
 	
@@ -18,7 +22,7 @@ public class BankAccount {
 		actIDcounter=1000;
 	}
 
-	public BankAccount(AcType at, String name, String email, Date doO, double balance) {
+	public BankAccount(AcType at, String name, String email, LocalDate doO, double balance) {
 		
 		this.at = at;
 		this.name = name;
@@ -29,7 +33,42 @@ public class BankAccount {
 		this.actid=actIDcounter;
 		totalCustomers++;
 	}
+	
+//	//primary key=actid+acType----------so overloaded constructor using composite key
+//public BankAccount(int actid,AcType at) {
+//	this.at = at;
+//		this.actid=actid;
+//	}
+	
+//----------unique email----so it is primary key-- overloaded ctor--
+	public BankAccount(String email,AcType at)
+	{
+		this.email=email;
+		this.at=at;
+	}
+	
+	//----------------------override toString----------------------
+	@Override
+	public String toString() {
+		return "BankAccount deatils: actid:" + actid +" type:"+ at + "name:" + name + " email:" + email + " opening date:=" + doO
+				+ " balance=" + balance;
+	}
+	
+	//---------------------overrride equals for checking unique email and actType--------------
 
+	@Override
+	public boolean equals(Object anotherBankAct)
+	{
+		if(anotherBankAct instanceof BankAccount )
+		{
+		 BankAccount b=(BankAccount)anotherBankAct;
+		return (this.getEmail()).equals(b.getEmail())&& (this.at).equals(b.getAt());	
+		}
+		
+		else
+		return false;
+	}
+	//-------------------getter and setters---------------------------
 	public String getName() {
 		return name;
 	}
@@ -58,7 +97,7 @@ public class BankAccount {
 		return at;
 	}
 
-	public Date getDoO() {
+	public LocalDate getDoO() {
 		return doO;
 	}
 
@@ -70,11 +109,7 @@ public class BankAccount {
 		return locker;		
 	}
 
-	@Override
-	public String toString() {
-		return "BankAccount deatils: actid:" + actid +" type:"+ at + "name:" + name + " email:" + email + " opening date:=" + doO
-				+ " balance=" + balance;
-	}
+//-----------------withdraw,deposit and transfer------------
 	public void withdraw(double amt)
 	{
 		balance=balance-amt;
@@ -93,6 +128,8 @@ public class BankAccount {
 		System.out.println("money transferred successfully");
 		System.out.println("your current balance is Rs."+balance);
 	}
+	
+//---------------assignLocker--------------------------
 	public void assignLocker(int duration) {
 		locker=new Locker(duration);
 		System.out.println(getLocker());
@@ -100,6 +137,8 @@ public class BankAccount {
 		withdraw((locker.charges*duration));
 	}
 	
+	
+	//-------------------------inner LOCKER class---------------------
 	private class Locker{
 		private int lockerid=100;
 		private int duration;
